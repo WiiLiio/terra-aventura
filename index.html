@@ -252,7 +252,7 @@ p{font-size:17px;line-height:1.58;color:var(--muted)}
     <div class="compass-center" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;z-index:6;background:#0b1a16;border:3px solid #e8c97a;box-shadow:0 0 16px rgba(232,201,122,.20);"></div>
   </div>
   <div class="heading" id="headingText" style="text-align:center;margin:8px 0 4px;color:#aebdb6;font-size:14px;min-height:20px;">Orientation en attente…</div>
-  <div style="text-align:center;font-size:10px;color:#60756b;margin-top:4px;">V12</div>
+  <div style="text-align:center;font-size:10px;color:#60756b;margin-top:4px;">V13</div>
 
   <div class="panel center">
     <div class="small">Distance restante</div>
@@ -261,11 +261,14 @@ p{font-size:17px;line-height:1.58;color:var(--muted)}
     <div class="accuracy" id="accuracy"></div>
   </div>
   <p id="travelHint">Approche-toi du point. L’énigme se débloquera automatiquement à environ 25 mètres.</p>
-  <div class="hintbox" id="hintBox">
-    <div class="hint-title">Tu ne trouves pas ?</div>
-    <button class="hintbtn" onclick="toggleHint()">Afficher un indice</button>
-    <div class="hint-text" id="hintText"></div>
-  </div>
+  <details id="nativeHint" style="margin-top:18px;padding:14px 16px;border-radius:16px;background:rgba(232,201,122,.08);border:1px dashed rgba(232,201,122,.35);">
+    <summary style="cursor:pointer;font-weight:900;color:#e8c97a;font-size:16px;">Je ne trouve pas ? Afficher un indice</summary>
+    <div id="nativeHintText" style="margin-top:12px;color:#f1eee6;line-height:1.55;font-size:16px;">
+      Chargement de l’indice…
+    </div>
+  </details>
+
+  
 
   <button id="demoArrive" class="btn secondary" style="display:none" onclick="unlockRiddle()">Simuler l’arrivée</button>
 </div>
@@ -345,6 +348,12 @@ let current = 0;
 let demo = false;
 let watchId = null;
 let unlocked = false;
+
+  const nh=document.getElementById("nativeHint");
+  const nht=document.getElementById("nativeHintText");
+  if(nh) nh.open=false;
+  if(nht) nht.textContent=stages[current].hint;
+
 let lastPos = null;
 let deviceHeading = 0;
 let headingEnabled = false;
@@ -450,18 +459,7 @@ function unlockRiddle(){
 }
 
 
-function toggleHint(){
-  const box=document.getElementById("hintBox");
-  const txt=document.getElementById("hintText");
-  const s=stages[current];
-  if(!box || !txt) return;
-  txt.textContent=s.hint;
-  box.classList.toggle("open");
-  const btn=box.querySelector(".hintbtn");
-  if(btn){
-    btn.textContent=box.classList.contains("open") ? "Masquer l’indice" : "Afficher un indice";
-  }
-}
+
 
 function checkAnswer(v){
   const s=stages[current];
