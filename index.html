@@ -76,6 +76,116 @@ p{font-size:17px;line-height:1.58;color:var(--muted)}
 .lockdigits span{width:58px;height:66px;display:grid;place-items:center;border-radius:13px;background:#050a08;border:2px solid #50655b;font-size:31px;font-weight:1000;color:var(--gold)}
 .note{padding:14px;border-radius:16px;background:rgba(122,205,240,.07);border:1px dashed rgba(122,205,240,.30);color:#d9eff7;font-size:14px;line-height:1.5}
 .accuracy{font-size:12px;color:#84988f;margin-top:5px}
+
+/* --- Boussole V10 corrigée --- */
+.compass{
+  width:190px;
+  height:190px;
+  border-radius:50%;
+  margin:22px auto 8px;
+  position:relative;
+  border:2px solid rgba(232,201,122,.42);
+  background:
+    radial-gradient(circle at center, rgba(126,227,165,.12) 0 18%, transparent 19%),
+    radial-gradient(circle at center, transparent 0 45%, rgba(255,255,255,.045) 46% 48%, transparent 49%),
+    linear-gradient(145deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+  box-shadow:
+    inset 0 0 38px rgba(122,205,240,.10),
+    0 0 32px rgba(232,201,122,.08);
+  overflow:hidden;
+}
+.compass .ring{
+  position:absolute;
+  inset:16px;
+  border-radius:50%;
+  border:1px dashed rgba(255,255,255,.16);
+}
+.compass .north,
+.compass .south,
+.compass .east,
+.compass .west{
+  position:absolute;
+  z-index:5;
+  font-size:13px;
+  font-weight:900;
+  color:#c6d3cd;
+  letter-spacing:.08em;
+  line-height:1;
+}
+.compass .north{
+  top:9px;
+  left:50%;
+  transform:translateX(-50%);
+  color:#e8c97a;
+}
+.compass .south{
+  bottom:9px;
+  left:50%;
+  transform:translateX(-50%);
+}
+.compass .east{
+  right:11px;
+  top:50%;
+  transform:translateY(-50%);
+}
+.compass .west{
+  left:11px;
+  top:50%;
+  transform:translateY(-50%);
+}
+.needle-wrap{
+  position:absolute;
+  inset:22px;
+  border-radius:50%;
+  z-index:3;
+  transition:transform .28s ease-out;
+  transform-origin:50% 50%;
+}
+.needle{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:7px;
+  height:70px;
+  transform:translate(-50%,-100%);
+  transform-origin:50% 100%;
+  border-radius:999px 999px 4px 4px;
+  background:linear-gradient(180deg,#ff6868 0 52%,#d9e5df 52% 100%);
+  box-shadow:0 0 18px rgba(255,104,104,.28);
+}
+.needle:before{
+  content:"";
+  position:absolute;
+  top:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  width:0;
+  height:0;
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-bottom:14px solid #ff6868;
+}
+.compass-center{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  z-index:6;
+  background:#0b1a16;
+  border:3px solid #e8c97a;
+  box-shadow:0 0 16px rgba(232,201,122,.18);
+}
+.heading{
+  text-align:center;
+  margin:8px 0 4px;
+  color:#aebdb6;
+  font-size:14px;
+  min-height:20px;
+}
+
 </style>
 </head>
 <body>
