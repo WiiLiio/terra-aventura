@@ -206,13 +206,19 @@ p{font-size:17px;line-height:1.58;color:var(--muted)}
   <div class="progress"><span id="pr1"></span><span id="pr2"></span><span id="pr3"></span></div>
   <h2 id="travelTitle">À toi de trouver le premier lieu</h2>
   
-  <div class="compass">
-    <div class="ring"></div>
-    <div class="north">N</div><div class="south">S</div><div class="east">E</div><div class="west">O</div>
-    <div class="needle-wrap" id="needleWrap"><div class="needle"></div></div>
-    <div class="compass-center"></div>
+  <div class="compass" style="width:190px;height:190px;border-radius:50%;margin:22px auto 8px;position:relative;border:2px solid rgba(232,201,122,.55);background:radial-gradient(circle at center,rgba(126,227,165,.13) 0 18%,transparent 19%),radial-gradient(circle at center,transparent 0 45%,rgba(255,255,255,.06) 46% 48%,transparent 49%),linear-gradient(145deg,rgba(255,255,255,.05),rgba(255,255,255,.01));box-shadow:inset 0 0 38px rgba(122,205,240,.12),0 0 32px rgba(232,201,122,.10);overflow:hidden;">
+    <div class="ring" style="position:absolute;inset:16px;border-radius:50%;border:1px dashed rgba(255,255,255,.18);"></div>
+    <div class="north" style="position:absolute;z-index:5;top:9px;left:50%;transform:translateX(-50%);font-size:13px;font-weight:900;color:#e8c97a;line-height:1;">N</div>
+    <div class="south" style="position:absolute;z-index:5;bottom:9px;left:50%;transform:translateX(-50%);font-size:13px;font-weight:900;color:#c6d3cd;line-height:1;">S</div>
+    <div class="east" style="position:absolute;z-index:5;right:11px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:900;color:#c6d3cd;line-height:1;">E</div>
+    <div class="west" style="position:absolute;z-index:5;left:11px;top:50%;transform:translateY(-50%);font-size:13px;font-weight:900;color:#c6d3cd;line-height:1;">O</div>
+    <div class="needle-wrap" id="needleWrap" style="position:absolute;inset:22px;border-radius:50%;z-index:3;transition:transform .28s ease-out;transform-origin:50% 50%;">
+      <div class="needle" style="position:absolute;left:50%;top:50%;width:7px;height:70px;transform:translate(-50%,-100%);transform-origin:50% 100%;border-radius:999px 999px 4px 4px;background:linear-gradient(180deg,#ff6868 0 52%,#d9e5df 52% 100%);box-shadow:0 0 18px rgba(255,104,104,.30);"></div>
+    </div>
+    <div class="compass-center" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;z-index:6;background:#0b1a16;border:3px solid #e8c97a;box-shadow:0 0 16px rgba(232,201,122,.20);"></div>
   </div>
-  <div class="heading" id="headingText">Orientation en attente…</div>
+  <div class="heading" id="headingText" style="text-align:center;margin:8px 0 4px;color:#aebdb6;font-size:14px;min-height:20px;">Orientation en attente…</div>
+  <div style="text-align:center;font-size:10px;color:#60756b;margin-top:4px;">V11</div>
 
   <div class="panel center">
     <div class="small">Distance restante</div>
