@@ -252,7 +252,7 @@ p{font-size:17px;line-height:1.58;color:var(--muted)}
     <div class="compass-center" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;z-index:6;background:#0b1a16;border:3px solid #e8c97a;box-shadow:0 0 16px rgba(232,201,122,.20);"></div>
   </div>
   <div class="heading" id="headingText" style="text-align:center;margin:8px 0 4px;color:#aebdb6;font-size:14px;min-height:20px;">Orientation en attente…</div>
-  <div style="text-align:center;font-size:10px;color:#60756b;margin-top:4px;">V13</div>
+  <div style="text-align:center;font-size:10px;color:#60756b;margin-top:4px;">V15</div>
 
   <div class="panel center">
     <div class="small">Distance restante</div>
@@ -261,16 +261,34 @@ p{font-size:17px;line-height:1.58;color:var(--muted)}
     <div class="accuracy" id="accuracy"></div>
   </div>
   <p id="travelHint">Approche-toi du point. L’énigme se débloquera automatiquement à environ 25 mètres.</p>
-  <details id="nativeHint" style="margin-top:18px;padding:14px 16px;border-radius:16px;background:rgba(232,201,122,.08);border:1px dashed rgba(232,201,122,.35);">
-    <summary style="cursor:pointer;font-weight:900;color:#e8c97a;font-size:16px;">Je ne trouve pas ? Afficher un indice</summary>
-    <div id="nativeHintText" style="margin-top:12px;color:#f1eee6;line-height:1.55;font-size:16px;">
-      Chargement de l’indice…
-    </div>
-  </details>
+  <div id="helpArea" style="margin-top:18px;">
+    <button id="helpBtn" type="button" onclick="showHelpHint()" style="
+      width:100%;
+      display:block;
+      padding:15px 16px;
+      border-radius:16px;
+      border:1px solid rgba(232,201,122,.38);
+      background:linear-gradient(135deg,rgba(232,201,122,.16),rgba(166,231,199,.10));
+      color:#f5e7bb;
+      font-size:16px;
+      font-weight:900;
+      cursor:pointer;
+      box-shadow:0 8px 24px rgba(0,0,0,.14);
+    ">Je ne trouve pas / ça ne marche pas</button>
 
-  
-
-  <button id="demoArrive" class="btn secondary" style="display:none" onclick="unlockRiddle()">Simuler l’arrivée</button>
+    <div id="helpHint" style="
+      display:none;
+      margin-top:12px;
+      padding:15px 16px;
+      border-radius:16px;
+      background:rgba(255,255,255,.045);
+      border:1px dashed rgba(232,201,122,.30);
+      color:#f4f0e6;
+      font-size:16px;
+      line-height:1.55;
+    "></div>
+  </div>
+<button id="demoArrive" class="btn secondary" style="display:none" onclick="unlockRiddle()">Simuler l’arrivée</button>
 </div>
 
 <div id="riddle" class="screen">
@@ -396,10 +414,24 @@ function startAdventure(isDemo){
 
 function loadTravel(){
   const s = stages[current];
+
+  const helpBox=document.getElementById("helpHint");
+  const helpBtn=document.getElementById("helpBtn");
+  if(helpBox){
+    helpBox.style.display="none";
+    helpBox.textContent="";
+  }
+  if(helpBtn){
+    helpBtn.textContent="Je ne trouve pas / ça ne marche pas";
+  }
   document.getElementById("stepBadge").textContent=`Étape ${current+1} sur 3`;
   document.getElementById("travelTitle").textContent=current===0 ? "À toi de trouver le premier lieu" : "Le prochain lieu t’attend";
   document.getElementById("travelHint").textContent="Approche-toi du point. L’énigme se débloquera automatiquement à environ 25 mètres.";
   document.getElementById("accuracy").textContent="";
+  const helpBox=document.getElementById("helpHint");
+  const helpBtn=document.getElementById("helpBtn");
+  if(helpBox){ helpBox.style.display="none"; helpBox.textContent=""; }
+  if(helpBtn){ helpBtn.textContent="Je ne trouve pas / ça ne marche pas"; }
   const hb=document.getElementById("hintBox");
   const ht2=document.getElementById("hintText");
   if(hb) hb.classList.remove("open");
@@ -460,6 +492,34 @@ function unlockRiddle(){
 
 
 
+
+
+
+function currentHelpHint(){
+  const hints=[
+    "Premier lieu : le Jardin de Mornac. Cherche le banc où nous avions mangé un Crousty.",
+    "Deuxième lieu : l’église de Magnac. C’est l’endroit lié au calme et aux étoiles filantes.",
+    "Troisième lieu : notre maison. Le dernier point t’attend devant chez nous."
+  ];
+  return hints[current] || "";
+}
+
+function showHelpHint(){
+  const box=document.getElementById("helpHint");
+  const btn=document.getElementById("helpBtn");
+  if(!box || !btn) return;
+
+  const open = box.style.display === "block";
+  if(open){
+    box.style.display = "none";
+    box.textContent = "";
+    btn.textContent = "Je ne trouve pas / ça ne marche pas";
+  }else{
+    box.textContent = currentHelpHint();
+    box.style.display = "block";
+    btn.textContent = "Masquer l’indice";
+  }
+}
 
 function checkAnswer(v){
   const s=stages[current];
