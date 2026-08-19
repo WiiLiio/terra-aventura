@@ -186,6 +186,40 @@ p{font-size:17px;line-height:1.58;color:var(--muted)}
   min-height:20px;
 }
 
+
+.hintbox{
+  margin-top:18px;
+  padding:16px;
+  border-radius:18px;
+  background:rgba(232,201,122,.07);
+  border:1px dashed rgba(232,201,122,.30);
+}
+.hintbox .hint-title{
+  font-weight:900;
+  color:#e8c97a;
+  margin-bottom:8px;
+}
+.hintbox .hint-text{
+  display:none;
+  color:#f2eee4;
+  line-height:1.5;
+  font-size:16px;
+}
+.hintbox.open .hint-text{
+  display:block;
+}
+.hintbtn{
+  width:100%;
+  margin-top:10px;
+  padding:13px 15px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);
+  background:#19322b;
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+
 </style>
 </head>
 <body>
@@ -218,7 +252,7 @@ p{font-size:17px;line-height:1.58;color:var(--muted)}
     <div class="compass-center" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:28px;height:28px;border-radius:50%;z-index:6;background:#0b1a16;border:3px solid #e8c97a;box-shadow:0 0 16px rgba(232,201,122,.20);"></div>
   </div>
   <div class="heading" id="headingText" style="text-align:center;margin:8px 0 4px;color:#aebdb6;font-size:14px;min-height:20px;">Orientation en attente…</div>
-  <div style="text-align:center;font-size:10px;color:#60756b;margin-top:4px;">V11</div>
+  <div style="text-align:center;font-size:10px;color:#60756b;margin-top:4px;">V12</div>
 
   <div class="panel center">
     <div class="small">Distance restante</div>
@@ -227,6 +261,12 @@ p{font-size:17px;line-height:1.58;color:var(--muted)}
     <div class="accuracy" id="accuracy"></div>
   </div>
   <p id="travelHint">Approche-toi du point. L’énigme se débloquera automatiquement à environ 25 mètres.</p>
+  <div class="hintbox" id="hintBox">
+    <div class="hint-title">Tu ne trouves pas ?</div>
+    <button class="hintbtn" onclick="toggleHint()">Afficher un indice</button>
+    <div class="hint-text" id="hintText"></div>
+  </div>
+
   <button id="demoArrive" class="btn secondary" style="display:none" onclick="unlockRiddle()">Simuler l’arrivée</button>
 </div>
 
@@ -277,7 +317,7 @@ const stages = [
     text:"Un jour, on s’est posés exactement ici pour manger quelque chose ensemble. Qu’est-ce que c’était ?",
     choices:["Une pizza","Un burger","Un Crousty","Des tacos"],
     answer:"Un Crousty",
-    fragment:"Premier fragment récupéré."
+    fragment:"Premier fragment récupéré.", hint:"Premier lieu : le Jardin de Mornac. Cherche le banc où nous avions mangé un Crousty."
   },
   {
     name:"Sous les étoiles",
@@ -287,7 +327,7 @@ const stages = [
     text:"Moi, je suis souvent venu ici pour me poser, réfléchir et me ressourcer. Et toi, tu m’as raconté être venue ici pour observer quelque chose dans le ciel. Qu’étais-tu venue voir ?",
     choices:["Une pleine lune","Une pluie d’étoiles filantes","Un lever de soleil","Un arc-en-ciel"],
     answer:"Une pluie d’étoiles filantes",
-    fragment:"Deuxième fragment récupéré."
+    fragment:"Deuxième fragment récupéré.", hint:"Deuxième lieu : l’église de Magnac. C’est l’endroit lié au calme et aux étoiles filantes."
   },
   {
     name:"La maison",
@@ -297,7 +337,7 @@ const stages = [
     text:"Ce jour-là, quelque chose d’important nous a été remis. Qu’est-ce que c’était ?",
     choices:["Les clés de la maison","Un permis de construire","Les clés d’un Airbnb","Un cadeau"],
     answer:"Les clés de la maison",
-    fragment:"Troisième fragment récupéré."
+    fragment:"Troisième fragment récupéré.", hint:"Troisième lieu : notre maison. Le dernier point t’attend devant chez nous."
   }
 ];
 
@@ -351,6 +391,10 @@ function loadTravel(){
   document.getElementById("travelTitle").textContent=current===0 ? "À toi de trouver le premier lieu" : "Le prochain lieu t’attend";
   document.getElementById("travelHint").textContent="Approche-toi du point. L’énigme se débloquera automatiquement à environ 25 mètres.";
   document.getElementById("accuracy").textContent="";
+  const hb=document.getElementById("hintBox");
+  const ht2=document.getElementById("hintText");
+  if(hb) hb.classList.remove("open");
+  if(ht2) ht2.textContent="";
   const ht=document.getElementById("headingText");
   if(ht) ht.textContent=demo ? "Mode test : boussole simulée." : "Orientation en attente…";
   for(let i=0;i<3;i++) document.getElementById("pr"+(i+1)).classList.toggle("done", i < current);
@@ -403,6 +447,20 @@ function unlockRiddle(){
     b.onclick=()=>checkAnswer(v);
     c.appendChild(b);
   });
+}
+
+
+function toggleHint(){
+  const box=document.getElementById("hintBox");
+  const txt=document.getElementById("hintText");
+  const s=stages[current];
+  if(!box || !txt) return;
+  txt.textContent=s.hint;
+  box.classList.toggle("open");
+  const btn=box.querySelector(".hintbtn");
+  if(btn){
+    btn.textContent=box.classList.contains("open") ? "Masquer l’indice" : "Afficher un indice";
+  }
 }
 
 function checkAnswer(v){
